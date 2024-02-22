@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     void saveUser(SignupRequest request);
     Boolean existsByUserName(String username);
-
     Boolean existsByEmail(String email);
+
+
 
 
 }
