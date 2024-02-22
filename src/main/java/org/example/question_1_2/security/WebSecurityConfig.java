@@ -3,6 +3,8 @@ package org.example.question_1_2.security;
 import org.example.question_1_2.security.jwt.AuthEntryPointJwt;
 import org.example.question_1_2.security.jwt.AuthTokenFilter;
 import org.example.question_1_2.security.service.UserDetailsServiceImpl;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +22,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    public UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    public AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public ModelMapper modelMapper() {
+        // Tạo object và cấu hình
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

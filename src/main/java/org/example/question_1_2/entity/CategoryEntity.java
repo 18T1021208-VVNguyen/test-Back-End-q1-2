@@ -1,17 +1,18 @@
 package org.example.question_1_2.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
-@Table(name = "categorys")
+@Table(name = "categorys", uniqueConstraints = {
+        @UniqueConstraint(name = "UNIQUE_CATEGORY_NAME", columnNames = "name") })
 public class CategoryEntity extends  BaseEntity{
 
     @NotBlank
@@ -22,5 +23,7 @@ public class CategoryEntity extends  BaseEntity{
     @Column(name = "description")
     private String description;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryEntity")
+    private Set<ProductEntity> product = new HashSet<>();
 
 }
